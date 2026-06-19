@@ -40,4 +40,97 @@
       <div style="width: 100%; height: 100%; background-color: white; border-radius: 26px; overflow: hidden; display: flex; flex-direction: column; font-size: 13px; position: relative;">
         
         <div style="background-color: #8C1D40; color: white; padding: 18px 15px 12px; text-align: center; font-weight: bold; font-size: 16px; letter-spacing: 1px;">
-          밥메이트 <span style="font-size: 12px; color: #FFF9C4; font-weight: normal;">
+          밥메이트 <span style="font-size: 12px; color: #FFF9C4; font-weight: normal;">[고려대]</span> 🍚
+        </div>
+
+        <div id="step1" style="padding: 15px; display: flex; flex-direction: column; height: 100%; box-sizing: border-box; background: linear-gradient(to bottom, #FFFDE7 0%, #FFFFFF 20%);">
+          <h3 style="margin-top: 0; color: #8C1D40; font-size: 14px; border-bottom: 2px solid #8C1D40; padding-bottom: 5px;">[1단계] 학교 인증 및 프로필 설정</h3>
+          
+          <label style="font-weight: bold; margin: 8px 0 3px; display: block; color: #555;">학교 이메일</label>
+          <input type="text" id="in-email" value="tiger@korea.ac.kr" style="width: 100%; padding: 8px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box; font-size: 12px;">
+          
+          <label style="font-weight: bold; margin: 8px 0 3px; display: block; color: #555;">학과 (전공)</label>
+          <input type="text" id="in-dept" value="사회학과" style="width: 100%; padding: 8px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box; font-size: 12px;">
+          
+          <label style="font-weight: bold; margin: 8px 0 3px; display: block; color: #555;">학번 선택</label>
+          <select id="in-year" style="width: 100%; padding: 8px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box; font-size: 12px;">
+            <option value="26학번" selected>26학번 (새내기)</option>
+            <option value="25학번">25학번</option>
+            <option value="24학번 이전">24학번 이전</option>
+          </select>
+
+          <label style="font-weight: bold; margin: 8px 0 3px; display: block; color: #555;">MBTI 성향</label>
+          <input type="text" id="in-mbti" value="ENFP" style="width: 100%; padding: 8px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box; font-size: 12px;">
+
+          <button onclick="document.getElementById('step1').style.display='none'; document.getElementById('step2').style.display='flex';" style="background-color: #8C1D40; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: auto; font-size: 13px; box-shadow: 0 3px 6px rgba(140,29,64,0.2);">새 학기 밥약 시작하기 🌱</button>
+        </div>
+
+        <div id="step2" style="padding: 15px; display: none; flex-direction: column; height: 100%; box-sizing: border-box;">
+          <h3 style="margin-top: 0; color: #8C1D40; font-size: 14px; border-bottom: 2px solid #8C1D40; padding-bottom: 5px;">[2단계] 캠퍼스 밥약 방 선택</h3>
+          
+          <div onclick="document.getElementById('partner-text').innerText='경영학과 25학번 (ISTJ) / 매칭 장소: 정문 서브웨이'; document.getElementById('step2').style.display='none'; document.getElementById('step4').style.display='flex';" style="border: 1px solid #E0E0E0; padding: 12px; border-radius: 8px; background-color: #FFF; margin-bottom: 12px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.04); border-left: 4px solid #A3E2A4;">
+            <div style="font-weight: bold; font-size: 13px; color: #111;">Subway에서 같이 점심 먹을 새내기 구함!</div>
+            <div style="font-size: 11px; color: #666; margin-top: 5px;">📍 정문 서브웨이 | ⏰ 12:00 | 💰 각자 계산</div>
+            <div style="text-align: right; font-size: 11px; color: #8C1D40; font-weight: bold; margin-top: 8px;">👉 신청하기 (클릭)</div>
+          </div>
+
+          <div id="new-room-area"></div>
+
+          <button onclick="document.getElementById('step2').style.display='none'; document.getElementById('step3').style.display='flex';" style="background-color: #2D3748; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: auto; font-size: 12px;">＋ 내가 직접 밥약 방 개설하기</button>
+        </div>
+
+        <div id="step3" style="padding: 15px; display: none; flex-direction: column; height: 100%; box-sizing: border-box;">
+          <h3 style="margin-top: 0; color: #8C1D40; font-size: 14px; border-bottom: 2px solid #8C1D40; padding-bottom: 5px;">[3단계] 새로운 밥약 방 개설</h3>
+          
+          <label style="font-weight: bold; margin: 10px 0 3px; display: block; color: #555;">약속 시간 설정</label>
+          <input type="text" id="room-time" value="12:30" style="width: 100%; padding: 8px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box;">
+
+          <label style="font-weight: bold; margin: 10px 0 3px; display: block; color: #555;">식당 위치 입력</label>
+          <input type="text" id="room-loc" value="안암역 미소야" style="width: 100%; padding: 8px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box;">
+
+          <label style="font-weight: bold; margin: 10px 0 3px; display: block; color: #555;">정산 방식 선택</label>
+          <select id="room-pay" style="width: 100%; padding: 8px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box;">
+            <option value="각자 계산 (더치페이)">각자 계산 (더치페이)</option>
+            <option value="내가 쏨">내가 쏨 💸</option>
+            <option value="만나서 조율">만나서 조율</option>
+          </select>
+
+          <button onclick="
+            const t = document.getElementById('room-time').value;
+            const l = document.getElementById('room-loc').value;
+            const p = document.getElementById('room-pay').value;
+            const d = document.getElementById('in-dept').value;
+            const y = document.getElementById('in-year').value;
+            const m = document.getElementById('in-mbti').value;
+            
+            document.getElementById('new-room-area').innerHTML = `
+              <div onclick='document.getElementById(&quot;partner-text&quot;).innerText=&quot;${d} ${y} (${m}) / 매칭 장소: ${l}&quot;; document.getElementById(&quot;step2&quot;).style.display=&quot;none&quot;; document.getElementById(&quot;step4&quot;).style.display=&quot;flex&quot;;' style='border: 1px solid #8C1D40; padding: 12px; border-radius: 8px; background-color: #FFF; margin-bottom: 12px; cursor: pointer; border-left: 4px solid #8C1D40;'>
+                <div style='font-weight: bold; color: #8C1D40; font-size: 13px;'>내가 개설한 새 학기 밥약 방 (대기중)</div>
+                <div style='font-size: 11px; color: #666; margin-top: 5px;'>📍 ${l} | ⏰ ${t} | 💰 ${p}</div>
+                <div style='text-align: right; font-size: 11px; color: #2B6CB0; font-weight: bold; margin-top: 8px;'>👉 다른 유저가 신청한 상황 시뮬레이션 (클릭)</div>
+              </div>
+            `;
+            document.getElementById('step3').style.display='none'; 
+            document.getElementById('step2').style.display='flex';
+          " style="background-color: #8C1D40; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: auto;">밥약 방 등록 완료</button>
+        </div>
+
+        <div id="step4" style="padding: 15px; display: none; flex-direction: column; height: 100%; box-sizing: border-box; background-color: #F7FAFC;">
+          <h3 style="margin-top: 0; color: #48BB78; text-align: center; font-size: 16px;">🎉 밥약 매칭 완료!</h3>
+          <div style="font-size: 11px; background-color: #EDF2F7; padding: 8px; border-radius: 6px; text-align: center; margin-bottom: 12px; color: #4A5568; font-weight: bold;" id="partner-text">
+            상대방 정보가 여기에 표시됩니다.
+          </div>
+
+          <div style="background-color: #E2E8F0; flex: 1; padding: 12px; border-radius: 8px; overflow-y: auto; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px;">
+            <div style="background: white; padding: 8px 12px; border-radius: 12px; font-size: 12px; max-width: 85%; align-self: flex-start; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">안녕하세요! 새 학기 첫 밥약 매칭되었네요. 반가워요!</div>
+            <div style="background: #FFF59D; padding: 8px 12px; border-radius: 12px; font-size: 12px; max-width: 85%; align-self: flex-end; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">안녕하세요 선배님! 시간 맞춰서 안암 캠퍼스에서 뵙겠습니다! 🙇‍♂️</div>
+          </div>
+
+          <button onclick="document.getElementById('step4').style.display='none'; document.getElementById('step1').style.display='flex'; document.getElementById('new-room-area').innerHTML='';" style="background-color: #718096; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; font-size: 12px;">첫 단계로 돌아가기</button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
