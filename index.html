@@ -19,6 +19,11 @@
             padding: 0;
         }
 
+        /* 부드러운 스크롤 효과 */
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
             background-color: var(--bg-cream);
@@ -57,16 +62,23 @@
             gap: 25px;
         }
 
-        .navbar .menu a {
-            color: var(--white);
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: color 0.3s;
-            cursor: pointer;
+        .navbar .menu li {
+            display: inline;
         }
 
-        .navbar .menu a:hover {
+        /* 버튼 역할을 확실하게 하도록 수정 */
+        .navbar .menu button.nav-link {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+            padding: 5px 10px;
+        }
+
+        .navbar .menu button.nav-link:hover {
             color: var(--ku-gold);
         }
 
@@ -121,8 +133,8 @@
 
         /* 3. 공통 섹션 스타일 */
         .section {
-            padding: 100px 10%;
-            min-height: 80vh;
+            padding: 120px 10% 80px 10%;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -297,27 +309,205 @@
             padding: 40px 20px;
             font-size: 0.9rem;
         }
-
-        /* 부드러운 스크롤 효과 */
-        html {
-            scroll-behavior: smooth;
-        }
     </style>
 </head>
 <body>
 
+    <!-- 1. 상단 내비게이션 바 -->
     <nav class="navbar">
         <div class="logo" onclick="scrollToSection('home')">🐯 고대 밥메이트</div>
         <ul class="menu">
-            <li><a onclick="scrollToSection('auth')">이메일 인증</a></li>
-            <li><a onclick="scrollToSection('profile')">프로필 설정</a></li>
-            <li><a onclick="scrollToSection('create')">밥약 개설</a></li>
-            <li><a onclick="scrollToSection('matching')">매칭 현황</a></li>
+            <li><button class="nav-link" onclick="scrollToSection('auth')">이메일 인증</button></li>
+            <li><button class="nav-link" onclick="scrollToSection('profile')">프로필 설정</button></li>
+            <li><button class="nav-link" onclick="scrollToSection('create')">밥약 개설</button></li>
+            <li><button class="nav-link" onclick="scrollToSection('matching')">매칭 현황</button></li>
         </ul>
     </nav>
 
+    <!-- 2. 메인 화면 (Hero) -->
     <header id="home" class="hero">
         <h1>고대 아기호랑이를 위한 <span>안심 밥약 플랫폼</span></h1>
         <p>처음 보는 타과 동기, 선후배와 부담 없이 안암 캠퍼스 맛집에서 따뜻한 밥 한 끼를 함께하세요. 학교 인증 기반으로 안전하게 연결됩니다.</p>
         <button class="cta-btn" onclick="scrollToSection('auth')">지금 시작하기 ✨</button>
-    </
+    </header>
+
+    <!-- 3. 이메일 인증 섹션 -->
+    <section id="auth" class="section">
+        <h2 class="section-title">01. 학교 이메일 인증</h2>
+        <p class="section-desc">안전한 캠퍼스 생태계를 위해 고려대학교 공식 이메일 계정(@korea.ac.kr)인증을 거쳐야 서비스를 이용할 수 있습니다.[cite: 1]</p>
+        
+        <div class="container-box">
+            <div class="form-group">
+                <label>고려대학교 이메일 주소</label>
+                <input type="email" id="email" placeholder="example@korea.ac.kr">
+            </div>
+            <button class="action-btn" onclick="sendCode()">인증코드 발송 (3분 제한)[cite: 1]</button>
+
+            <div id="code-section" style="display:none; margin-top: 30px;">
+                <div class="form-group">
+                    <label>인증코드 6자리 입력[cite: 1]</label>
+                    <input type="text" id="code" placeholder="123456">
+                </div>
+                <button class="action-btn" style="background-color: var(--ku-gold);" onclick="verifyCode()">인증 완료</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. 프로필 설정 섹션 -->
+    <section id="profile" class="section">
+        <h2 class="section-title">02. 매칭 프로필 설정</h2>
+        <p class="section-desc">소속 학과, 학번, MBTI 성향을 바탕으로 최적의 밥메이트를 매칭해 드립니다.[cite: 1]</p>
+
+        <div class="container-box">
+            <div class="form-group">
+                <label>학과 (전공)</label>
+                <input type="text" id="major" placeholder="예: 정경대학 정치외교학과">
+            </div>
+            <div class="form-group">
+                <label>학번</label>
+                <select id="studentId">
+                    <option value="26">26학번 (아기호랑이 🐯)</option>
+                    <option value="25">25학번</option>
+                    <option value="24">24학번</option>
+                    <option value="23">23학번 이상 (든든한 선배 🦁)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>MBTI 성향 선택[cite: 1]</label>
+                <input type="text" id="mbti" placeholder="예: ENFP" maxlength="4">
+            </div>
+            <button class="action-btn" onclick="saveProfile()">프로필 저장 후 다음 단계로</button>
+        </div>
+    </section>
+
+    <!-- 5. 밥약 개설 섹션 -->
+    <section id="create" class="section">
+        <h2 class="section-title">03. 밥약 방 만들기</h2>
+        <p class="section-desc">내가 원하는 식사 시간대와 안암 캠퍼스 주변의 맛집 리스트를 등록하여 밥약 방을 개설해보세요.[cite: 1]</p>
+
+        <div class="container-box">
+            <div class="form-group">
+                <label>약속 날짜 및 시간 설정[cite: 1]</label>
+                <input type="datetime-local">
+            </div>
+            <div class="form-group">
+                <label>가고 싶은 곳 (안암 / 참살이길 직접 입력)</label>
+                <input type="text" placeholder="예: 철남 / 이세돈가스 / 정후 돈까스">
+            </div>
+            <div class="form-group">
+                <label>정산 방식[cite: 1]</label>
+                <select>
+                    <option>각자 깔끔하게 계산 (더치페이)[cite: 1]</option>
+                    <option>오늘은 선배인 내가 쏜다! 💸[cite: 1]</option>
+                    <option>만나서 편하게 조율해요[cite: 1]</option>
+                </select>
+            </div>
+            <button class="action-btn" onclick="createRoom()">안암 밥약 방 개설 완료 🍚[cite: 1]</button>
+        </div>
+    </section>
+
+    <!-- 6. 매칭 완료 및 DM 섹션 -->
+    <section id="matching" class="section">
+        <h2 class="section-title">04. 매칭 현황</h2>
+        <p class="section-desc">매칭이 완료되면 개인 연락처 노출 없이 앱 내 안심 디엠을 통해 약속 장소를 조율할 수 있습니다.[cite: 1]</p>
+
+        <div class="container-box" style="max-width: 800px;">
+            <div style="background:#FFF0F2; padding:20px; border-radius:12px; margin-bottom:20px; border-left:5px solid var(--ku-crimson);">
+                <h3 style="color: var(--ku-crimson); margin-bottom: 5px;">🎉 매칭이 성공적으로 이루어졌습니다!</h3>
+                <p style="margin:0; font-size:1rem;"><b>매칭 상대 정보:</b> 미디어학부 / 24학번 / ENFJ (새내기를 기다린 선배 🦁)</p>
+            </div>
+
+            <!-- 안심 채팅 UI -->
+            <div class="chat-container">
+                <div class="chat-header">
+                    <span>📱 안심 디엠 (연락처 비공개)[cite: 1]</span>
+                    <button onclick="triggerAlert()" style="background:var(--ku-gold); border:none; padding:5px 10px; color:white; font-size:0.8rem; border-radius:5px; cursor:pointer;">🔔 리마인더 테스트</button>
+                </div>
+                <div class="chat-messages" id="chatBox">
+                    <div class="msg incoming">
+                        <b>선배 호랑이:</b> 안녕하세요 새내기님! 밥약 신청해주셔서 감사해요 ㅎㅎ 참살이길 앞에서 볼까요?
+                    </div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chatInput" placeholder="메시지를 입력하세요...">
+                    <button onclick="sendMsg()">전송</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer>
+        <p>© 2026 고대 밥메이트(Bob-Mate). All Rights Reserved.</p>
+        <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.6;">본 사이트는 고려대학교 신입생을 위한 기능 모의 구현 프로토타입 웹사이트입니다.</p>
+    </footer>
+
+    <script>
+        // 스크롤 이동 함수를 더 확실하게 전역 함수로 수정
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                // 네비게이션 바의 높이(약 60px)만큼 여유를 두고 이동하도록 계산
+                const offset = 70;
+                const bodyRect = document.body.getBoundingClientRect().top;
+                const elementRect = element.getBoundingClientRect().top;
+                const elementPosition = elementRect - bodyRect;
+                const offsetPosition = elementPosition - offset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        function sendCode() {
+            const email = document.getElementById('email').value;
+            if(!email || !email.includes('@korea.ac.kr')) { 
+                alert('올바른 고대 이메일 주소(@korea.ac.kr)를 입력해주세요!'); 
+                return; 
+            }
+            document.getElementById('code-section').style.display = 'block';
+            alert('인증코드가 발송되었습니다. 메일함을 확인해주세요! (3분 제한)[cite: 1]');
+        }
+
+        function verifyCode() {
+            const code = document.getElementById('code').value;
+            if(!code) { alert('인증코드를 입력해주세요!'); return; }
+            alert('이메일 인증이 완료되었습니다! 프로필 설정으로 이동합니다.');
+            scrollToSection('profile');
+        }
+
+        function saveProfile() {
+            const major = document.getElementById('major').value;
+            if(!major) { alert('학과를 입력해주세요!'); return; }
+            alert('프로필이 성공적으로 저장되었습니다! 밥약 방 개설 단계로 이동합니다.');
+            scrollToSection('create');
+        }
+
+        function createRoom() {
+            alert('밥약 방이 개설되었습니다! 매칭 매니저가 즉시 상대를 찾아 매칭방을 오픈합니다.');
+            scrollToSection('matching');
+        }
+
+        function sendMsg() {
+            const input = document.getElementById('chatInput');
+            if(!input.value) return;
+            const box = document.getElementById('chatBox');
+            
+            box.innerHTML += `<div class="msg outgoing"><b>나:</b> ${input.value}</div>`;
+            input.value = '';
+            box.scrollTop = box.scrollHeight;
+            
+            setTimeout(() => {
+                box.innerHTML += `<div class="msg incoming"><b>선배 호랑이:</b> 와, 좋습니다! 그럼 당일에 학교 정문이나 참살이길 쪽에서 봬요! 맛있는 거 사드릴게요 🐯🔥</div>`;
+                box.scrollTop = box.scrollHeight;
+            }, 1200);
+        }
+
+        function triggerAlert() {
+            alert("⏰ [밥약 리마인더]\n어흥! 약속 시간 1시간 전입니다. '오늘 약속이 있습니다!' 늦지 않게 준비해 주세요![cite: 1]");
+        }
+    </script>
+</body>
+</html>
