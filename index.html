@@ -3,323 +3,503 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>고대 밥메이트 (Bob-Mate)</title>
+    <title>밥메이트: 캠퍼스 밥약 매칭 플랫폼</title>
     <style>
         :root {
-            --ku-crimson: #8C1D40;      /* 고려대학교 공식 크림슨 */
-            --ku-gold: #D29A42;         /* 따뜻한 느낌의 골드 */
-            --bg-cream: #FAF6F0;         /* 포근한 크림색 배경 */
+            --ku-crimson: #8C1D40;      /* 고려대 크림슨 */
+            --ku-gold: #D29A42;         /* 따뜻한 골드 */
+            --bg-cream: #FAF6F0;        /* 메인 크림 배경색 */
             --text-dark: #2B2B2B;
+            --white: #ffffff;
         }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
-            background-color: #E2D7CD;
-            margin: 0;
-            padding: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            background-color: var(--bg-cream);
             color: var(--text-dark);
+            line-height: 1.6;
         }
-        /* 앱 화면을 담은 스마트폰 틀 */
-        .phone-container {
-            width: 360px;
-            height: 680px;
-            background: white;
-            border-radius: 36px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-            overflow: hidden;
+
+        /* 1. 네비게이션 바 (상단 고정 메뉴) */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--ku-crimson);
+            color: var(--white);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 10%;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(140, 29, 64, 0.2);
+        }
+
+        .navbar .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .navbar .menu {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .navbar .menu a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .navbar .menu a:hover {
+            color: var(--ku-gold);
+        }
+
+        /* 2. 메인 히어로 섹션 (첫 화면) */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, var(--ku-crimson), #5A1027);
+            color: var(--white);
             display: flex;
             flex-direction: column;
-            position: relative;
-            border: 8px solid #2b2b2b;
-        }
-        /* 앱 상단 헤더 */
-        .header {
-            background: var(--ku-crimson);
-            color: white;
-            padding: 18px 15px;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            font-weight: bold;
-            font-size: 1.2rem;
-            letter-spacing: 0.5px;
-            box-shadow: 0 3px 10px rgba(140, 29, 64, 0.15);
+            padding: 0 20px;
+            padding-top: 80px;
         }
-        /* 내부 화면 영역 */
-        .content {
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 span {
+            color: var(--ku-gold);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .hero .cta-btn {
+            background-color: var(--ku-gold);
+            color: var(--white);
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .hero .cta-btn:hover {
+            transform: translateY(-3px);
+            background-color: #BD8734;
+        }
+
+        /* 3. 공통 섹션 스타일 */
+        .section {
+            padding: 100px 10%;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .section:nth-child(even) {
+            background-color: var(--white);
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            color: var(--ku-crimson);
+            margin-bottom: 15px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 60px;
+            height: 4px;
+            background-color: var(--ku-gold);
+        }
+
+        .section-desc {
+            font-size: 1.05rem;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        /* 4. 작업 컴포넌트 (카드 및 폼) */
+        .container-box {
+            background: var(--bg-cream);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            max-width: 700px;
+            width: 100%;
+            margin: 0 auto;
+            border: 1px solid #EADCC9;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--ku-crimson);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #EADCC9;
+            border-radius: 10px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+            background: var(--white);
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--ku-crimson);
+        }
+
+        .action-btn {
+            width: 100%;
+            background-color: var(--ku-crimson);
+            color: var(--white);
+            padding: 16px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .action-btn:hover {
+            background-color: #6F1330;
+        }
+
+        /* 5. 실시간 채팅 UI */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 400px;
+            background: var(--white);
+            border: 2px solid #EADCC9;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: #F1ECE6;
+            padding: 15px;
+            font-weight: bold;
+            border-bottom: 1px solid #E2D7CD;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-messages {
             flex: 1;
             padding: 20px;
             overflow-y: auto;
-            background-color: var(--bg-cream);
             display: flex;
             flex-direction: column;
-        }
-        .screen { display: none; height: 100%; }
-        .screen.active { display: flex; flex-direction: column; }
-        
-        /* 새내기 환영 배너 */
-        .welcome-banner {
-            background: linear-gradient(135deg, var(--ku-crimson), #A3274E);
-            color: white;
-            padding: 12px;
-            border-radius: 12px;
-            text-align: center;
-            font-size: 0.85rem;
-            margin-bottom: 20px;
-            line-height: 1.4;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+            gap: 12px;
+            background: #FAF6F0;
         }
 
-        /* 폼 타이틀 및 요소 디자인 */
-        h2 { 
-            font-size: 1.2rem; 
-            margin-top: 0; 
-            margin-bottom: 15px;
-            color: var(--ku-crimson); 
-            border-left: 4px solid var(--ku-gold);
-            padding-left: 8px;
+        .msg {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 15px;
+            font-size: 0.95rem;
         }
-        p { font-size: 0.85rem; color: #555; line-height: 1.4; margin-top: 0; margin-bottom: 15px; }
-        label { font-size: 0.8rem; font-weight: bold; color: var(--ku-crimson); display: block; margin-top: 5px;}
-        
-        input, select {
-            width: 100%;
-            padding: 11px;
-            margin: 6px 0 14px 0;
-            border: 2px solid #EADCC9;
-            border-radius: 10px;
-            box-sizing: border-box;
-            background-color: white;
-            font-size: 0.85rem;
-            transition: border-color 0.3s;
+
+        .msg.incoming {
+            background-color: var(--white);
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+            border: 1px solid #EADCC9;
         }
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--ku-crimson);
+
+        .msg.outgoing {
+            background-color: var(--ku-crimson);
+            color: var(--white);
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
         }
-        
-        /* 메인 버튼 */
-        button {
-            width: 100%;
-            background: var(--ku-crimson);
-            color: white;
-            border: none;
-            padding: 13px;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 0.9rem;
-            cursor: pointer;
-            margin-top: auto; /* 버튼을 항상 화면 하단에 가깝게 배치 */
-            margin-bottom: 5px;
-            transition: all 0.2s;
-            box-shadow: 0 4px 6px rgba(140, 29, 64, 0.12);
-        }
-        button:hover { 
-            background: #731533; 
-        }
-        
-        /* 하단 탭바 내비게이션 */
-        .tab-bar {
+
+        .chat-input-area {
             display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            background: #F1ECE6;
+            padding: 15px;
+            background: var(--white);
             border-top: 1px solid #E2D7CD;
+            gap: 10px;
         }
-        .tab-item {
-            font-size: 0.7rem;
-            color: #888;
-            cursor: pointer;
-            text-align: center;
+
+        .chat-input-area input {
             flex: 1;
-            font-weight: bold;
-        }
-        .tab-item.active { 
-            color: var(--ku-crimson); 
-        }
-        .tab-icon {
-            font-size: 1.2rem;
-            margin-bottom: 2px;
-            display: block;
-        }
-        
-        /* 채팅 시스템 */
-        .chat-box {
-            background: white;
-            flex: 1;
-            min-height: 140px;
-            max-height: 180px;
-            border: 2px solid #EADCC9;
-            border-radius: 12px;
             padding: 12px;
-            overflow-y: auto;
-            font-size: 0.85rem;
-            margin-bottom: 12px;
+            border: 2px solid #EADCC9;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .chat-input-area button {
+            background: var(--ku-crimson);
+            color: var(--white);
+            border: none;
+            padding: 0 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* 푸터 */
+        footer {
+            background-color: #2B2B2B;
+            color: #ccc;
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 0.9rem;
+        }
+
+        /* 부드러운 스크롤 효과 */
+        html {
+            scroll-behavior: smooth;
         }
     </style>
 </head>
 <body>
 
-<div class="phone-container">
-    <!-- 앱 상단 고정 헤더 -->
-    <div class="header" id="app-title">고대 밥메이트 🐯❤️</div>
-    
-    <div class="content">
-        <!-- 상단 고정 웰컴 배너 -->
-        <div class="welcome-banner" id="welcomeBanner">
-            🎉 <b>아기호랑이 환영합니다!</b> 🎉<br>
-            고대생 전용 안심 매칭으로 든든한 한 끼를 잡으세요!
-        </div>
+    <!-- 1. 상단 내비게이션 바 -->
+    <nav class="navbar">
+        <div class="logo" onclick="scrollToSection('home')">🐯 고대 밥메이트</div>
+        <ul class="menu">
+            <li><a onclick="scrollToSection('auth')">이메일 인증</a></li>
+            <li><a onclick="scrollToSection('profile')">프로필 설정</a></li>
+            <li><a onclick="scrollToSection('create')">밥약 개설</a></li>
+            <li><a onclick="scrollToSection('matching')">매칭 현황</a></li>
+        </ul>
+    </nav>
 
-        <!-- 1번 화면: 이메일 인증 -->
-        <div class="screen active" id="screen1">
-            <h2>학교 이메일 인증</h2>
-            <p>안전한 캠퍼스 매칭을 위해 고대 메일 계정(@korea.ac.kr)이 필요합니다.</p>
-            
-            <label>고려대학교 이메일</label>
-            <input type="email" id="email" placeholder="student@korea.ac.kr">
-            <button type="button" onclick="sendCode()">인증코드 발송</button>
-            
-            <div id="code-section" style="display:none; margin-top: 10px; width: 100%;">
-                <label>인증코드 6자리 (3분 제한)</label>
-                <input type="text" id="code" placeholder="123456">
-                <button type="button" onclick="nextScreen(2)" style="background: var(--ku-gold);">인증 완료</button>
-            </div>
-        </div>
+    <!-- 2. 메인 화면 (Hero) -->
+    <header id="home" class="hero">
+        <h1>고대 아기호랑이를 위한 <span>안심 밥약 플랫폼</span></h1>
+        <p>처음 보는 타과 동기, 선후배와 부담 없이 안암 캠퍼스 맛집에서 따뜻한 밥 한 끼를 함께하세요. 학교 인증 기반으로 안전하게 연결됩니다.</p>
+        <button class="cta-btn" onclick="scrollToSection('auth')">지금 시작하기 ✨</button>
+    </header>
 
-        <!-- 2번 화면: 프로필 설정 -->
-        <div class="screen" id="screen2">
-            <h2>매칭 프로필 설정</h2>
-            <p>상대방 호랑이에게 보여질 나의 프로필입니다. 멋지게 소개해 주세요!</p>
-            
-            <label>단과대학 / 학과</label>
-            <input type="text" id="major" placeholder="예: 정경대학 정치외교학과">
-            
-            <label>학번</label>
-            <select id="studentId">
-                <option>26학번 (새내기 🐯)</option>
-                <option>25학번</option>
-                <option>24학번</option>
-                <option>23학번 이상 (든든한 선배 🦁)</option>
-            </select>
-            
-            <label>MBTI 4자리</label>
-            <input type="text" id="mbti" placeholder="예: ENFP" maxlength="4">
-            
-            <button type="button" onclick="saveProfile()">프로필 저장하기</button>
-        </div>
-
-        <!-- 3번 화면: 밥약 개설 -->
-        <div class="screen" id="screen3">
-            <h2>밥약 방 개설하기</h2>
-            <p>원하는 밥약 시간과 안암 캠퍼스 근처의 맛집 장소를 설정하세요.</p>
-            
-            <label>약속 일시</label>
-            <input type="datetime-local">
-            
-            <label>식당 / 장소 이름</label>
-            <input type="text" placeholder="예: 참살이길 영철버거 / 제기동 국밥집">
-            
-            <label>정산 방식</label>
-            <select>
-                <option>각자 계산 (더치페이)</option>
-                <option>오늘 선배인 내가 쏜다! 💸</option>
-                <option>만나서 조율해요</option>
-            </select>
-            
-            <button type="button" onclick="createRoom()">밥약 방 만들기 완료 🍚</button>
-        </div>
-
-        <!-- 4번 화면: 매칭완료 및 안심 DM -->
-        <div class="screen" id="screen4">
-            <h2>매칭 성공! 🐯🤝🐯</h2>
-            <div style="background:#FFF0F2; padding:10px; border-radius:10px; margin-bottom:12px; font-size:0.85rem; border-left:3px solid var(--ku-crimson);">
-                🎯 <b>매칭 상대:</b> 미디어학부 / 24학번 / ENFJ (선배 호랑이)
-            </div>
-            
-            <label>📱 안심 디엠 대화방</label>
-            <div class="chat-box" id="chatBox">
-                <p style="color:#A3274E; text-align:center; font-size:0.75rem; font-weight:bold; margin-top:0;">✨ 매칭이 성사되어 대화방이 열렸습니다. ✨</p>
-                <p style="text-align:left; margin:5px 0; color:var(--ku-crimson)"><b>선배 호랑이:</b> 안녕하세요 새내기님! 밥약 신청해주셔서 감사해요 ㅎㅎ 참살이길 앞에서 뵐까요?</p>
-            </div>
-            
-            <div style="display:flex; gap:5px; margin-bottom: 10px;">
-                <input type="text" id="chatInput" placeholder="답장을 입력하세요..." style="margin:0; flex:1; padding:8px;">
-                <button type="button" onclick="sendMsg()" style="margin:0; width:65px; padding:8px; font-size:0.8rem;">전송</button>
-            </div>
-            
-            <button type="button" onclick="triggerAlert()" style="background:#555; font-size:0.75rem; padding:8px;">🔔 1시간 전 약속 리마인더 팝업 테스트</button>
-        </div>
-    </div>
-
-    <!-- 하단 고정 앱 탭바 내비게이션 -->
-    <div class="tab-bar">
-        <div class="tab-item active" id="tab1" onclick="goDirect(1)"><span class="tab-icon">🔒</span>인증</div>
-        <div class="tab-item" id="tab2" onclick="goDirect(2)"><span class="tab-icon">👤</span>프로필</div>
-        <div class="tab-item" id="tab3" onclick="goDirect(3)"><span class="tab-icon">➕</span>개설</div>
-        <div class="tab-item" id="tab4" onclick="goDirect(4)"><span class="tab-icon">💬</span>채팅</div>
-    </div>
-</div>
-
-<script>
-    function nextScreen(num) {
-        // 모든 스크린 숨기고 해당 스크린만 켜기
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById('screen' + num).classList.add('active');
+    <!-- 3. 이메일 인증 섹션 -->
+    <section id="auth" class="section">
+        <h2 class="section-title">01. 학교 이메일 인증</h2>
+        <p class="section-desc">안전한 캠퍼스 생태계를 위해 고려대학교 공식 이메일 계정(@korea.ac.kr)인증을 거쳐야 서비스를 이용할 수 있습니다.</p>
         
-        // 하단 탭 하이라이트 전환
-        document.querySelectorAll('.tab-item').forEach(d => d.classList.remove('active'));
-        document.getElementById('tab' + num).classList.add('active');
-        
-        // 채팅방(4번) 접근 시 화면 확보를 위해 상단 배너 숨김 처리
-        if(num === 4) {
-            document.getElementById('welcomeBanner').style.display = 'none';
-        } else {
-            document.getElementById('welcomeBanner').style.display = 'block';
+        <div class="container-box">
+            <div class="form-group">
+                <label>고려대학교 이메일 주소</label>
+                <input type="email" id="email" placeholder="example@korea.ac.kr">
+            </div>
+            <button class="action-btn" onclick="sendCode()">인증코드 발송 (3분 제한)[cite: 1]</button>
+
+            <div id="code-section" style="display:none; margin-top: 30px;">
+                <div class="form-group">
+                    <label>인증코드 6자리 입력[cite: 1]</label>
+                    <input type="text" id="code" placeholder="123456">
+                </div>
+                <button class="action-btn" style="background-color: var(--ku-gold);" onclick="verifyCode()">인증 완료</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. 프로필 설정 섹션 -->
+    <section id="profile" class="section">
+        <h2 class="section-title">02. 매칭 프로フィ 설정</h2>
+        <p class="section-desc">소속 학과, 학번, MBTI 성향을 바탕으로 최적의 밥메이트를 매칭해 드립니다.[cite: 1]</p>
+
+        <div class="container-box">
+            <div class="form-group">
+                <label>학과 (전공)</label>
+                <input type="text" id="major" placeholder="예: 정경대학 정치외교학과">
+            </div>
+            <div class="form-group">
+                <label>학번</label>
+                <select id="studentId">
+                    <option value="26">26학번 (아기호랑이 🐯)</option>
+                    <option value="25">25학번</option>
+                    <option value="24">24학번</option>
+                    <option value="23">23학번 이상 (든든한 선배 🦁)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>MBTI 성향 선택[cite: 1]</label>
+                <input type="text" id="mbti" placeholder="예: ENFP" maxlength="4">
+            </div>
+            <button class="action-btn" onclick="saveProfile()">프로필 저장 후 다음 단계로</button>
+        </div>
+    </section>
+
+    <!-- 5. 밥약 개설 섹션 -->
+    <section id="create" class="section">
+        <h2 class="section-title">03. 밥약 방 만들기</h2>
+        <p class="section-desc">내가 원하는 식사 시간대와 안암 캠퍼스 주변의 맛집 리스트를 등록하여 밥약 방을 개설해보세요.[cite: 1]</p>
+
+        <div class="container-box">
+            <div class="form-group">
+                <label>약속 날짜 및 시간 설정[cite: 1]</label>
+                <input type="datetime-local">
+            </div>
+            <div class="form-group">
+                <label>식당 위치 (안암 / 참살이길 직접 입력)[cite: 1]</label>
+                <input type="text" placeholder="예: 영철버거 / 안암 오거리 고기집 / 정후 돈까스">
+            </div>
+            <div class="form-group">
+                <label>정산 방식[cite: 1]</label>
+                <select>
+                    <option>각자 깔끔하게 계산 (더치페이)[cite: 1]</option>
+                    <option>오늘은 선배인 내가 쏜다! 💸[cite: 1]</option>
+                    <option>만나서 편하게 조율해요[cite: 1]</option>
+                </select>
+            </div>
+            <button class="action-btn" onclick="createRoom()">안암 밥약 방 개설 완료 🍚[cite: 1]</button>
+        </div>
+    </section>
+
+    <!-- 6. 매칭 완료 및 DM 섹션 -->
+    <section id="matching" class="section">
+        <h2 class="section-title">04. 매칭 완료 및 안심 DM</h2>
+        <p class="section-desc">매칭이 완료되면 개인 연락처 노출 없이 앱 내 안심 디엠을 통해 약속 장소를 조율할 수 있습니다.[cite: 1]</p>
+
+        <div class="container-box" style="max-width: 800px;">
+            <div style="background:#FFF0F2; padding:20px; border-radius:12px; margin-bottom:20px; border-left:5px solid var(--ku-crimson);">
+                <h3 style="color: var(--ku-crimson); margin-bottom: 5px;">🎉 매칭이 성공적으로 이루어졌습니다!</h3>
+                <p style="margin:0; font-size:1rem;"><b>매칭 상대 정보:</b> 미디어학부 / 24학번 / ENFJ (새내기를 기다린 선배 🦁)</p>
+            </div>
+
+            <!-- 안심 채팅 UI -->
+            <div class="chat-container">
+                <div class="chat-header">
+                    <span>📱 안심 디엠 (연락처 비공개)[cite: 1]</span>
+                    <button onclick="triggerAlert()" style="background:var(--ku-gold); border:none; padding:5px 10px; color:white; font-size:0.8rem; border-radius:5px;">🔔 리마인더 테스트</button>
+                </div>
+                <div class="chat-messages" id="chatBox">
+                    <div class="msg incoming">
+                        <b>선배 호랑이:</b> 안녕하세요 새내기님! 밥약 신청해주셔서 감사해요 ㅎㅎ 참살이길 앞에서 볼까요?
+                    </div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chatInput" placeholder="메시지를 입력하세요...">
+                    <button onclick="sendMsg()">전송</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer>
+        <p>© 2026 고대 밥메이트(Bob-Mate). All Rights Reserved.</p>
+        <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.6;">본 사이트는 고려대학교 신입생을 위한 기능 모의 구현 프로토타입 웹사이트입니다.</p>
+    </footer>
+
+    <script>
+        // 상단 네비게이션바 클릭 시 부드럽게 스크롤 이동시키는 함수
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
         }
-    }
-    
-    function goDirect(num) { nextScreen(num); }
 
-    function sendCode() {
-        const email = document.getElementById('email').value;
-        if(!email) { alert('이메일을 입력해주세요!'); return; }
-        document.getElementById('code-section').style.display = 'block';
-        alert('고대 메일로 6자리 인증코드가 전송되었습니다! 입력창에 적어주세요.');
-    }
+        // 1단계: 인증코드 전송 기능
+        function sendCode() {
+            const email = document.getElementById('email').value;
+            if(!email || !email.includes('@korea.ac.kr')) { 
+                alert('올바른 고대 이메일 주소(@korea.ac.kr)를 입력해주세요!'); 
+                return; 
+            }
+            document.getElementById('code-section').style.display = 'block';
+            alert('인증코드가 발송되었습니다. 메일함을 확인해주세요! (3분 제한)[cite: 1]');
+        }
 
-    function saveProfile() {
-        const major = document.getElementById('major').value;
-        if(!major) { alert('학과를 입력해주세요!'); return; }
-        alert('프로필이 고대 안전 DB에 저장되었습니다.');
-        nextScreen(3);
-    }
+        // 1단계: 인증 완료 후 2단계로 스크롤 이동
+        function verifyCode() {
+            const code = document.getElementById('code').value;
+            if(!code) { alert('인증코드를 입력해주세요!'); return; }
+            alert('이메일 인증이 완료되었습니다! 프로필 설정으로 이동합니다.');
+            scrollToSection('profile');
+        }
 
-    function createRoom() {
-        alert('안암 캠퍼스 밥약 방이 성공적으로 만들어졌습니다! 매칭을 시작합니다.');
-        nextScreen(4);
-    }
+        // 2단계: 프로필 저장 후 3단계로 스크롤 이동
+        function saveProfile() {
+            const major = document.getElementById('major').value;
+            if(!major) { alert('학과를 입력해주세요!'); return; }
+            alert('프로필이 성공적으로 저장되었습니다! 밥약 방 개설 단계로 이동합니다.');
+            scrollToSection('create');
+        }
 
-    function sendMsg() {
-        const input = document.getElementById('chatInput');
-        if(!input.value) return;
-        const box = document.getElementById('chatBox');
-        box.innerHTML += `<p style="text-align:right; margin:5px 0;"><b>나:</b> ${input.value}</p>`;
-        input.value = '';
-        box.scrollTop = box.scrollHeight;
-        
-        // 1초 뒤 친절한 대답 자동 반응 시뮬레이션
-        setTimeout(() => {
-            box.innerHTML += `<p style="text-align:left; margin:5px 0; color:var(--ku-crimson)"><b>선배 호랑이:</b> 와, 좋아요! 맛있는 거 먹으면서 학교 얘기도 많이 해요 🐯🔥</p>`;
+        // 3단계: 방 개설 후 4단계로 스크롤 이동
+        function createRoom() {
+            alert('밥약 방이 개설되었습니다! 매칭 매니저가 즉시 상대를 찾아 매칭방을 오픈합니다.');
+            scrollToSection('matching');
+        }
+
+        // 4단계: 실시간 안심 DM 메시지 전송 및 자동 모의 답변 시뮬레이션
+        function sendMsg() {
+            const input = document.getElementById('chatInput');
+            if(!input.value) return;
+            const box = document.getElementById('chatBox');
+            
+            // 사용자가 입력한 메시지 추가
+            box.innerHTML += `<div class="msg outgoing"><b>나:</b> ${input.value}</div>`;
+            const currentMsg = input.value;
+            input.value = '';
             box.scrollTop = box.scrollHeight;
-        }, 1000);
-    }
+            
+            // 1초 뒤 상대방(선배)의 친절한 답장 자동 시뮬레이션
+            setTimeout(() => {
+                box.innerHTML += `<div class="msg incoming"><b>선배 호랑이:</b> 와, 좋습니다! 그럼 당일에 학교 정문이나 참살이길 쪽에서 봬요! 맛있는 거 사드릴게요 🐯🔥</div>`;
+                box.scrollTop = box.scrollHeight;
+            }, 1200);
+        }
 
-    function triggerAlert() {
-        alert("⏰ [밥메이트 리마인더]\n어흥! 오늘 약속 시간 1시간 전입니다. 매칭 장소로 늦지 않게 이동해 주세요!");
-    }
-</script>
-
+        // 1시간 전 자동 리마인더 기능 테스트 팝업
+        function triggerAlert() {
+            alert("⏰ [밥약 리마인더]\n어흥! 약속 시간 1시간 전입니다. '오늘 약속이 있습니다!' 늦지 않게 준비해 주세요![cite: 1]");
+        }
+    </script>
 </body>
 </html>
