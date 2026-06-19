@@ -5,7 +5,7 @@
     <div style="background: linear-gradient(135deg, #8C1D40 60%, #A3E2A4 100%); padding: 25px; border-radius: 8px; color: white; margin-bottom: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
       <h1 style="color: white; margin: 0; font-size: 26px; letter-spacing: -1px;">🍚 밥메이트 (Bob-Mate)</h1>
       <p style="margin: 8px 0 0 0; font-size: 14px; color: #FFCCD5; font-weight: bold;">캠퍼스 밥약 매칭 플랫폼 PRD</p>
-      <div style="margin-top: 10px; font-size: 12px; background-color: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 4px; display: inline-block;">🌱 2026년도 새 학기 맞이 소프트웨어 프로젝트</div>
+      <div style="margin-top: 10px; font-size: 12px; background-color: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 4px; display: inline-block;">🌱 새 학기 맞이 소프트웨어 프로젝트</div>
     </div>
 
     <h2 style="border-left: 4px solid #8C1D40; padding-left: 10px; color: #8C1D40; font-size: 18px;">📌 01 제품 개요</h2>
@@ -31,6 +31,22 @@
       <li><strong>앱 내 디엠 채팅:</strong> 연락처 비공개 임시 채팅방 오픈으로 개인정보를 보호하며 오프라인 만남 유도</li>
       <li><strong>노쇼 신고 시스템:</strong> 약속 시간 이후 신고 기능 활성화 및 노쇼 데이터 누적을 통한 패널티 부여</li>
     </ul>
+
+    <h2 style="border-left: 4px solid #8C1D40; padding-left: 10px; color: #8C1D40; font-size: 18px;">📊 05 데이터 구조</h2>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px;">
+      <tr style="background-color: #8C1D40; color: white;">
+        <th style="padding: 10px; border: 1px solid #dee2e6; text-align: left;">데이터 유형</th>
+        <th style="padding: 10px; border: 1px solid #dee2e6; text-align: left;">포함 항목</th>
+      </tr>
+      <tr>
+        <td style="padding: 10px; border: 1px solid #dee2e6; font-weight: bold;">유저 데이터</td>
+        <td style="padding: 10px; border: 1px solid #dee2e6;">이메일, 학과, 학번, MBTI, 노쇼 횟수</td>
+      </tr>
+      <tr style="background-color: #f9f9f9;">
+        <td style="padding: 10px; border: 1px solid #dee2e6; font-weight: bold;">밥약 방 데이터</td>
+        <td style="padding: 10px; border: 1px solid #dee2e6;">방장, 날짜, 시간, 식당, 정산방식, 모집상태</td>
+      </tr>
+    </table>
   </div>
 
   <div style="flex: 1; min-width: 340px; display: flex; justify-content: center; align-items: center; background-color: #E8F5E9; padding: 20px; border-radius: 12px; border: 2px dashed #A3E2A4;">
@@ -92,45 +108,4 @@
           <select id="room-pay" style="width: 100%; padding: 8px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box;">
             <option value="각자 계산 (더치페이)">각자 계산 (더치페이)</option>
             <option value="내가 쏨">내가 쏨 💸</option>
-            <option value="만나서 조율">만나서 조율</option>
-          </select>
-
-          <button onclick="
-            const t = document.getElementById('room-time').value;
-            const l = document.getElementById('room-loc').value;
-            const p = document.getElementById('room-pay').value;
-            const d = document.getElementById('in-dept').value;
-            const y = document.getElementById('in-year').value;
-            const m = document.getElementById('in-mbti').value;
-            
-            document.getElementById('new-room-area').innerHTML = `
-              <div onclick='document.getElementById(&quot;partner-text&quot;).innerText=&quot;${d} ${y} (${m}) / 매칭 장소: ${l}&quot;; document.getElementById(&quot;step2&quot;).style.display=&quot;none&quot;; document.getElementById(&quot;step4&quot;).style.display=&quot;flex&quot;;' style='border: 1px solid #8C1D40; padding: 12px; border-radius: 8px; background-color: #FFF; margin-bottom: 12px; cursor: pointer; border-left: 4px solid #8C1D40;'>
-                <div style='font-weight: bold; color: #8C1D40; font-size: 13px;'>내가 개설한 새 학기 밥약 방 (대기중)</div>
-                <div style='font-size: 11px; color: #666; margin-top: 5px;'>📍 ${l} | ⏰ ${t} | 💰 ${p}</div>
-                <div style='text-align: right; font-size: 11px; color: #2B6CB0; font-weight: bold; margin-top: 8px;'>👉 다른 유저가 신청한 상황 시뮬레이션 (클릭)</div>
-              </div>
-            `;
-            document.getElementById('step3').style.display='none'; 
-            document.getElementById('step2').style.display='flex';
-          " style="background-color: #8C1D40; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: auto;">밥약 방 등록 완료</button>
-        </div>
-
-        <div id="step4" style="padding: 15px; display: none; flex-direction: column; height: 100%; box-sizing: border-box; background-color: #F7FAFC;">
-          <h3 style="margin-top: 0; color: #48BB78; text-align: center; font-size: 16px;">🎉 밥약 매칭 완료!</h3>
-          <div style="font-size: 11px; background-color: #EDF2F7; padding: 8px; border-radius: 6px; text-align: center; margin-bottom: 12px; color: #4A5568; font-weight: bold;" id="partner-text">
-            상대방 정보가 여기에 표시됩니다.
-          </div>
-
-          <div style="background-color: #E2E8F0; flex: 1; padding: 12px; border-radius: 8px; overflow-y: auto; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px;">
-            <div style="background: white; padding: 8px 12px; border-radius: 12px; font-size: 12px; max-width: 85%; align-self: flex-start; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">안녕하세요! 새 학기 첫 밥약 매칭되었네요. 반가워요!</div>
-            <div style="background: #FFF59D; padding: 8px 12px; border-radius: 12px; font-size: 12px; max-width: 85%; align-self: flex-end; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">안녕하세요 선배님! 시간 맞춰서 안암 캠퍼스에서 뵙겠습니다! 🙇‍♂️</div>
-          </div>
-
-          <button onclick="document.getElementById('step4').style.display='none'; document.getElementById('step1').style.display='flex'; document.getElementById('new-room-area').innerHTML='';" style="background-color: #718096; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; font-size: 12px;">첫 단계로 돌아가기</button>
-        </div>
-
-      </div>
-    </div>
-
-  </div>
-</div>
+            <option value="만
